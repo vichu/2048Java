@@ -5,6 +5,7 @@ apply plugin: 'coveralls'
 sourceCompatibility = 1.7
 version = '1.0'
 
+
 sourceSets.main.java.srcDirs = ['src']
 sourceSets.test.java.srcDirs = ['test']
 
@@ -32,12 +33,10 @@ buildscript {
 
 }
 
-cobertura {
-    coverageFormats = ['html', 'xml']
-}
+cobertura.coverageFormats = ['html', 'xml']
 
 test {
     jvmArgs '-XX:-UseSplitVerifier'
 }
 
-defaultTasks 'clean', 'cobertura', 'coveralls'
+defaultTasks 'clean', 'cobertura'
