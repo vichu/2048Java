@@ -1,5 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'cobertura'
+apply plugin: 'coveralls'
 
 sourceCompatibility = 1.7
 version = '1.0'
@@ -25,18 +26,18 @@ buildscript {
     }
 
     dependencies{
-        classpath 'com.eriwen:gradle-cobertura-plugin:1.1.1'
+        classpath 'net.saliman:gradle-cobertura-plugin:2.2.2'
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:0.4.0'
     }
 
 }
 
 cobertura {
-    format = 'html'
-    includes = ['**/*.java']
+    coverageFormats = ['html', 'xml']
 }
 
 test {
     jvmArgs '-XX:-UseSplitVerifier'
 }
 
-defaultTasks 'clean', 'test', 'testCoberturaReport'
+defaultTasks 'clean', 'cobertura', 'coveralls'
