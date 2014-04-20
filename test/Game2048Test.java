@@ -54,10 +54,29 @@ public class Game2048Test extends TestCase {
     }
 
     @Test
-    public void testSetUpBoardWithRowAndColValueBeingNegative() {
+    public void testSetUpBoardWithColBeingInvalid() {
+        assertFalse(game2048.initializeBoard(2, 5));
+    }
+
+    @Test
+    public void testSetUpBoardWithRowValueBeingNegative() {
         assertFalse(game2048.initializeBoard(-1, 2));
     }
 
+    @Test
+    public void testSetUpBoardWithRowAndColValueBothBeingNegative() {
+        assertFalse(game2048.initializeBoard(-1, -2));
+    }
+
+    @Test
+    public void testSetUpBoardWithRowBeingNegativeAndColIllegal() {
+        assertFalse(game2048.initializeBoard(-1, 5));
+    }
+
+    @Test
+    public void testSetUpBoardWithColValueColBeingNegativeAndRowLegal() {
+        assertFalse(game2048.initializeBoard(2, -2));
+    }
 
 
 }

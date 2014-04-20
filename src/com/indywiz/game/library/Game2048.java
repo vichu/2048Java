@@ -6,7 +6,7 @@ package com.indywiz.game.library;
 public class Game2048 {
 
     private final int GRID_SIZE = 4;
-    public int[][] gridArray;
+    public int[][] gridArray = null;
 
     public Game2048() {
         gridArray = new int[GRID_SIZE][GRID_SIZE];
@@ -14,7 +14,8 @@ public class Game2048 {
 
 
     public boolean initializeBoard(int row, int column) {
-        if(gridArray == null ||
+
+        if( gridArray == null ||
                 (row >= GRID_SIZE) || (column >= GRID_SIZE) ||
                 (row < 0) || (column < 0) ) {
             return false;
