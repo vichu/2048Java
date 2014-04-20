@@ -1,4 +1,7 @@
 language: java
 
+env:
+- TERM=dumb
+
 after_success:
 - gradle cobertura coveralls
