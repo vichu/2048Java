@@ -1,4 +1,5 @@
 apply plugin: 'java'
+//apply plugin: 'idea'
 apply plugin: 'cobertura'
 apply plugin: 'coveralls'
 
@@ -33,7 +34,10 @@ buildscript {
 
 }
 
-cobertura.coverageFormats = ['html', 'xml']
+cobertura{
+    coverageSourceDirs = sourceSets.main.java.srcDirs
+    coverageFormats = ['html', 'xml']
+}
 
 test {
     jvmArgs '-XX:-UseSplitVerifier'
