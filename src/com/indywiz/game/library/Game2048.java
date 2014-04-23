@@ -1,12 +1,10 @@
 package com.indywiz.game.library;
 
-/**
- * Created by viswanathanr on 4/11/14.
- */
 public class Game2048 {
 
     private final int GRID_SIZE = 4;
-    public int[][] gridArray = null;
+    int[][] gridArray = null;
+
 
     public Game2048() {
         gridArray = new int[GRID_SIZE][GRID_SIZE];
@@ -21,7 +19,23 @@ public class Game2048 {
             return false;
         }
 
+        for (int i = 0; i < GRID_SIZE; i++)
+            for(int j = 0; j < GRID_SIZE; j++) {
+                if(gridArray[i][j] != 0)
+                    return false;
+            }
+
         gridArray[row][column] = 2;
+        return true;
+    }
+
+
+    public boolean spawnABlockAt(int row, int column, int number) {
+
+        if(initializeBoard(row, column))
+            return false;
+
+        gridArray[row][column] = number;
         return true;
     }
 }

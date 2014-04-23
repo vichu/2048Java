@@ -1,4 +1,5 @@
-import com.indywiz.game.library.Game2048;
+package com.indywiz.game.library;
+
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +20,8 @@ public class Game2048Test extends TestCase {
     public void testCanary() {
         assertTrue(true);
     }
+
+    //Initialize the board with a cell;
 
     @Test
     public void testInitializeBoardWithAllEmptyStates() {
@@ -78,5 +81,24 @@ public class Game2048Test extends TestCase {
         assertFalse(game2048.initializeBoard(2, -2));
     }
 
+    @Test
+    public void testAlreadyInitializedGrid() {
+        game2048.initializeBoard(2, 1);
+        assertFalse(game2048.initializeBoard(1, 3));
+    }
+
+    //Spawn a new block in grid
+
+    @Test
+    public void testSpawnABlockInTheGrid() {
+        game2048.initializeBoard(1, 1);
+        game2048.spawnABlockAt(2, 1, 2);
+        assertEquals(2, game2048.gridArray[2][1]);
+    }
+
+    @Test
+    public void testSpawnABlockWithoutTheGridBeingInitialized() {
+        assertFalse(game2048.spawnABlockAt(1, 2, 2));
+    }
 
 }
