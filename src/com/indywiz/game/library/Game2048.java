@@ -2,12 +2,16 @@ package com.indywiz.game.library;
 
 public class Game2048 {
 
-    private final int GRID_SIZE = 4;
+    private int _gridSize = 4; //default
     int[][] gridArray = null;
 
-
     public Game2048() {
-        gridArray = new int[GRID_SIZE][GRID_SIZE];
+        gridArray = new int[_gridSize][_gridSize];
+    }
+
+    public Game2048(int gridSize) {
+        _gridSize = gridSize;
+        gridArray = new int[_gridSize][_gridSize];
     }
 
     /**
@@ -20,12 +24,12 @@ public class Game2048 {
      */
     public boolean initializeBoard(int row, int column) {
 
-        if(checkGridValidity(row, column)) {
+        if(checkIfInvalid(row, column)) {
             return false;
         }
 
-        for (int i = 0; i < GRID_SIZE; i++)
-            for(int j = 0; j < GRID_SIZE; j++) {
+        for (int i = 0; i < _gridSize; i++)
+            for(int j = 0; j < _gridSize; j++) {
                 if(gridArray[i][j] != 0)
                     return false;
             }
@@ -34,9 +38,9 @@ public class Game2048 {
         return true;
     }
 
-    private boolean checkGridValidity(int row, int column) {
+    private boolean checkIfInvalid(int row, int column) {
         return gridArray == null ||
-                (row >= GRID_SIZE) || (column >= GRID_SIZE) ||
+                (row >= _gridSize) || (column >= _gridSize) ||
                 (row < 0) || (column < 0);
     }
 
@@ -49,7 +53,7 @@ public class Game2048 {
      * @param column
      * Is the column in with you want to place the number during the initialization.
      * @param number
-     * The number that is to be spawned. Generally powers of 2.
+     * The number that is to be spawned. Only powers of 2 are considered as valid number.
      * @return
      * True if the initialization is success and False if it fails. Also initializes the grid if not called after
      * initializeBoard() method.
@@ -59,10 +63,16 @@ public class Game2048 {
         if( initializeBoard(row, column) )
             return false;
 
-        if ( checkGridValidity(row, column) )
+        if ( checkIfInvalid(row, column) )
+            return false;
+
+        if(number <= 0 || ( (number & (number-1)) != 0 ) )    //Check for power of two.
             return false;
 
         gridArray[row][column] = number;
         return true;
     }
+
+
+
 }

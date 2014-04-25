@@ -21,6 +21,12 @@ public class Game2048Test extends TestCase {
         assertTrue(true);
     }
 
+    @Test
+    public void testGridHavingGirdSizeOtherThanDefault4() {
+        game2048 = new Game2048(3);
+        assertEquals(3, game2048.gridArray[0].length);
+    }
+
     //Initialize the board with a cell;
 
     @Test
@@ -107,5 +113,20 @@ public class Game2048Test extends TestCase {
         game2048.initializeBoard(1, 2);
         assertFalse(game2048.spawnABlockAt(1, -1, 4));
     }
+
+    @Test
+    public void testSpawnABlockWithNumberBeingANonPowerOfTwo() {
+        game2048.initializeBoard(1, 2);
+        assertFalse(game2048.spawnABlockAt(2, 1, 5));
+    }
+
+    @Test
+    public void testSpawnABlockWithNegativeNumber() {
+        game2048.initializeBoard(1, 2);
+        assertFalse(game2048.spawnABlockAt(2,1, -4));
+    }
+
+    // todo : Move blocks
+
 
 }
