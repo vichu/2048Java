@@ -98,7 +98,14 @@ public class Game2048Test extends TestCase {
 
     @Test
     public void testSpawnABlockWithoutTheGridBeingInitialized() {
-        assertFalse(game2048.spawnABlockAt(1, 2, 2));
+        game2048.spawnABlockAt(1, 2, 4);
+        assertEquals(2, game2048.gridArray[1][2]);
+    }
+
+    @Test
+    public void testSpawnABlockWithIllegalRowAndColumnValues() {
+        game2048.initializeBoard(1, 2);
+        assertFalse(game2048.spawnABlockAt(1, -1, 4));
     }
 
 }
