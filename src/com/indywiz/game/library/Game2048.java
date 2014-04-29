@@ -5,6 +5,10 @@ public class Game2048 {
     private int _gridSize = 4; //default
     int[][] gridArray = null;
 
+    enum Directions{
+      RIGHT;
+    };
+
     public Game2048() {
         gridArray = new int[_gridSize][_gridSize];
     }
@@ -73,6 +77,52 @@ public class Game2048 {
         return true;
     }
 
+    public void moveTo(Directions direction) {
 
+        if (direction == Directions.RIGHT)
+            moveRight();
+
+    }
+
+    private void moveRight() {
+
+        boolean merged;
+        for(int i = 0; i < _gridSize; i++) {
+
+            merged = false;
+
+            for(int j = _gridSize-1; j >= 0; j--) {
+
+
+                if( gridArray[i][j] == 0)
+                    continue;
+                int farthestIndex = j;
+                int current = farthestIndex;
+                int next = current + 1;
+
+                while (next < _gridSize) {
+
+                    if ( (gridArray[i][current] == gridArray[i][next]) && (!merged) ) {
+                        gridArray[i][next] = gridArray[i][current] * 2;
+                        gridArray[i][current] = 0;
+                        merged = true;
+                    }
+
+                    else if (gridArray[i][next] == 0) {
+                        gridArray[i][next] = gridArray[i][current];
+                        gridArray[i][current] = 0;
+                        current++;
+                        next++;
+                    }
+                    else {
+                        break;
+                    }
+                }
+
+            }
+        }
+
+
+    }
 
 }

@@ -128,5 +128,40 @@ public class Game2048Test extends TestCase {
 
     // todo : Move blocks
 
+    @Test
+    public void testMoveBlocksToRight() {
+        game2048 = new Game2048();
+        game2048.initializeBoard( 0, 0 );
+        game2048.moveTo(Game2048.Directions.RIGHT);
+        assertEquals(2, game2048.gridArray[0][3]);
+    }
+
+    @Test
+    public void testMoveBlocksToRightWithTwoBlocks() {
+        game2048 = new Game2048();
+        game2048.initializeBoard(0, 0);
+        game2048.spawnABlockAt(0, 1, 4);
+        game2048.spawnABlockAt(0, 3, 4);
+        int[] resultArray = new int[]{0, 0, 2, 8};
+        game2048.moveTo(Game2048.Directions.RIGHT);
+        for (int i = 0; i < 4; i++)
+            assertEquals(resultArray[i], game2048.gridArray[0][i]);
+    }
+
+    @Test
+    public void testMoveBlocksToRightWithTwoRepeatingBlocks() {
+        game2048 = new Game2048();
+        game2048.initializeBoard(0, 0);
+        game2048.spawnABlockAt(0, 1, 2);
+        game2048.spawnABlockAt(0, 2, 2);
+        game2048.spawnABlockAt(0, 3, 2);
+        game2048.moveTo(Game2048.Directions.RIGHT);
+
+        int[] resultArray = new int[]{0, 2, 2, 4};
+        for (int i = 0; i < 4; i++)
+            assertEquals(resultArray[i], game2048.gridArray[0][i]);
+
+    }
+
 
 }
