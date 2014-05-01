@@ -160,7 +160,26 @@ public class Game2048Test extends TestCase {
         int[] resultArray = new int[]{0, 2, 2, 4};
         for (int i = 0; i < 4; i++)
             assertEquals(resultArray[i], game2048.gridArray[0][i]);
+    }
 
+    @Test
+    public void testMoveTheBlockDown() {
+        game2048.initializeBoard(0, 2);
+        game2048.moveTo(Game2048.Directions.DOWN);
+        assertEquals(2, game2048.gridArray[3][2]);
+    }
+
+    @Test
+    public void testMoveTheBlocksDownWithTwoRepeatingBlocks() {
+        game2048.initializeBoard(0, 0);
+        game2048.spawnABlockAt(1, 0, 2);
+        game2048.spawnABlockAt(2, 0, 2);
+        game2048.spawnABlockAt(3, 0, 2);
+        game2048.moveTo(Game2048.Directions.DOWN);
+        int[] resultArray = new int[]{0, 2, 2, 4};
+        for (int i=0; i<game2048.gridArray.length; i++) {
+            assertEquals(resultArray[i], game2048.gridArray[i][0]);
+        }
     }
 
 

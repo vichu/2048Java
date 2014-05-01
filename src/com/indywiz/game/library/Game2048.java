@@ -6,7 +6,7 @@ public class Game2048 {
     int[][] gridArray = null;
 
     enum Directions{
-      RIGHT;
+      RIGHT, DOWN;
     };
 
     public Game2048() {
@@ -79,50 +79,81 @@ public class Game2048 {
 
     public void moveTo(Directions direction) {
 
-        if (direction == Directions.RIGHT)
-            moveRight();
-
-    }
-
-    private void moveRight() {
-
-        boolean merged;
-        for(int i = 0; i < _gridSize; i++) {
-
-            merged = false;
-
-            for(int j = _gridSize-1; j >= 0; j--) {
-
-
-                if( gridArray[i][j] == 0)
-                    continue;
-                int farthestIndex = j;
-                int current = farthestIndex;
-                int next = current + 1;
-
-                while (next < _gridSize) {
-
-                    if ( (gridArray[i][current] == gridArray[i][next]) && (!merged) ) {
-                        gridArray[i][next] = gridArray[i][current] * 2;
-                        gridArray[i][current] = 0;
-                        merged = true;
-                    }
-
-                    else if (gridArray[i][next] == 0) {
-                        gridArray[i][next] = gridArray[i][current];
-                        gridArray[i][current] = 0;
-                        current++;
-                        next++;
-                    }
-                    else {
-                        break;
-                    }
-                }
-
-            }
+        switch (direction) {
+            case RIGHT:
+                moveToRight();
+                break;
+            case DOWN:
+                moveDown();
+                break;
         }
 
 
+    }
+
+    private void moveDown() {
+        int[][] transposeArray = matrixTranspose(gridArray);
+        int[][] shiftedArray = new int[_gridSize][_gridSize];
+        for(int i = 0; i < _gridSize; i++) {
+            int[] arrayToShift = transposeArray[i];
+            shiftedArray[i] = shiftToRight(arrayToShift);
+        }
+
+        shiftedArray = matrixTranspose(shiftedArray);
+        gridArray = shiftedArray;
+    }
+
+    private void moveToRight() {
+        for(int i = 0; i < _gridSize; i++) {
+            int[] arrayToShift = gridArray[i];
+            gridArray[i] = shiftToRight(arrayToShift);
+        }
+    }
+
+    private int[][] matrixTranspose(int[][] inputArray) {
+        int[][] resultArray = new int[_gridSize][_gridSize];
+
+        for(int i = 0; i < _gridSize; i++) {
+            for(int j = 0; j < _gridSize; j++) {
+                resultArray[i][j] = inputArray[j][i];
+            }
+        }
+        return resultArray;
+    }
+
+
+    private int[] shiftToRight( int[] arrayToShift ) {
+
+        boolean merged = false;
+        for(int j = _gridSize-1; j >= 0; j--) {
+
+            if( arrayToShift[j] == 0)
+                continue;
+            int farthestIndex = j;
+            int current = farthestIndex;
+            int next = current + 1;
+
+            while (next < _gridSize) {
+
+                if ( (arrayToShift[current] == arrayToShift[next]) && (!merged) ) {
+                    arrayToShift[next] = arrayToShift[current] * 2;
+                    arrayToShift[current] = 0;
+                    merged = true;
+                }
+
+                else if (arrayToShift[next] == 0) {
+                    arrayToShift[next] = arrayToShift[current];
+                    arrayToShift[current] = 0;
+                    current++;
+                    next++;
+                }
+                else {
+                    break;
+                }
+            }
+        }
+
+        return arrayToShift;
     }
 
 }
