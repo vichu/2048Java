@@ -6,7 +6,7 @@ public class Game2048 {
     int[][] gridArray = null;
 
     enum Directions{
-      RIGHT, LEFT, DOWN;
+      RIGHT, LEFT, UP, DOWN;
     };
 
     public Game2048() {
@@ -88,8 +88,27 @@ public class Game2048 {
                 break;
             case LEFT:
                 moveLeft();
+                break;
+            case UP:
+                moveUp();
+                break;
         }
 
+
+    }
+
+    private void moveUp() {
+
+        int[][] transposeArray = matrixTranspose(gridArray);
+        int[][] reversedTransposedArray = reverseMatrix(transposeArray);
+        int[][] shiftedArray = new int[_gridSize][_gridSize];
+        for(int i=0; i<_gridSize;i++) {
+            int[] arrayToShift = reversedTransposedArray[i];
+            shiftedArray[i] = shiftToRight(arrayToShift);
+        }
+        reversedTransposedArray = reverseMatrix(shiftedArray);
+        transposeArray = matrixTranspose(reversedTransposedArray);
+        gridArray = transposeArray;
 
     }
 
