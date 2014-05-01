@@ -128,6 +128,7 @@ public class Game2048Test extends TestCase {
 
     // todo : Move blocks
 
+    //Move to right
     @Test
     public void testMoveBlocksToRight() {
         game2048 = new Game2048();
@@ -162,11 +163,24 @@ public class Game2048Test extends TestCase {
             assertEquals(resultArray[i], game2048.gridArray[0][i]);
     }
 
+    //Move blocks down
     @Test
     public void testMoveTheBlockDown() {
         game2048.initializeBoard(0, 2);
         game2048.moveTo(Game2048.Directions.DOWN);
         assertEquals(2, game2048.gridArray[3][2]);
+    }
+
+    @Test
+    public void testMoveTheBlockDownWithNoMergings() {
+        game2048.initializeBoard(0, 2);
+        game2048.spawnABlockAt(1, 2, 4);
+        game2048.spawnABlockAt(2, 2, 2);
+        game2048.moveTo(Game2048.Directions.DOWN);
+
+        int[] resultArray = new int[]{0, 2, 4, 2};
+        for (int i = 0; i < 4; i++)
+            assertEquals(resultArray[i], game2048.gridArray[i][2]);
     }
 
     @Test
@@ -181,6 +195,53 @@ public class Game2048Test extends TestCase {
             assertEquals(resultArray[i], game2048.gridArray[i][0]);
         }
     }
+
+    @Test
+    public void testMoveTheBlocksDownWithTwoRepeatingBlocksTwice() {
+        game2048.initializeBoard(0, 0);
+        game2048.spawnABlockAt(1, 0, 2);
+        game2048.spawnABlockAt(2, 0, 2);
+        game2048.spawnABlockAt(3, 0, 2);
+        game2048.moveTo(Game2048.Directions.DOWN);
+        game2048.moveTo(Game2048.Directions.DOWN);
+        int[] resultArray = new int[]{0, 0, 4, 4};
+        for (int i=0; i<game2048.gridArray.length; i++) {
+            assertEquals(resultArray[i], game2048.gridArray[i][0]);
+        }
+    }
+
+    //Move left
+    @Test
+    public void testMoveLeft() {
+        game2048.initializeBoard(0, 3);
+        game2048.moveTo(Game2048.Directions.LEFT);
+        assertEquals(2, game2048.gridArray[0][0]);
+    }
+
+    @Test
+    public void testMoveBlocksToLeftWithTwoBlocks() {
+        game2048.initializeBoard(0, 0);
+        game2048.spawnABlockAt(0, 1, 4);
+        game2048.spawnABlockAt(0, 3, 4);
+        int[] resultArray = new int[]{2, 8, 0, 0};
+        game2048.moveTo(Game2048.Directions.LEFT);
+        for (int i = 0; i < 4; i++)
+            assertEquals(resultArray[i], game2048.gridArray[0][i]);
+    }
+
+    @Test
+    public void testMoveBlocksToLeftWithTwoRepeatingBlocks() {
+        game2048.initializeBoard(0, 0);
+        game2048.spawnABlockAt(0, 1, 2);
+        game2048.spawnABlockAt(0, 2, 2);
+        game2048.spawnABlockAt(0, 3, 2);
+        game2048.moveTo(Game2048.Directions.LEFT);
+
+        int[] resultArray = new int[]{4, 2, 2, 0};
+        for (int i = 0; i < 4; i++)
+            assertEquals(resultArray[i], game2048.gridArray[0][i]);
+    }
+
 
 
 }
