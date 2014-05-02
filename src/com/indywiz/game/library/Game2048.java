@@ -4,10 +4,12 @@ public class Game2048 {
 
     private int _gridSize = 4; //default
     int[][] gridArray = null;
+    private int winScore = 2048;
+    public boolean gameWin = false;
 
-    enum Directions{
-      RIGHT, LEFT, UP, DOWN;
-    };
+    public enum Directions{
+      RIGHT, LEFT, UP, DOWN
+    }
 
     public Game2048() {
         gridArray = new int[_gridSize][_gridSize];
@@ -77,6 +79,11 @@ public class Game2048 {
         return true;
     }
 
+    /**
+     * This method is used to move the blocks to the direction specified. This method does not return anything.
+     * @param direction
+     * This argument could be either Directions.UP, Directions.DOWN, Directions.RIGHT, Directions.LEFT.
+     */
     public void moveTo(Directions direction) {
 
         switch (direction) {
@@ -93,7 +100,6 @@ public class Game2048 {
                 moveUp();
                 break;
         }
-
 
     }
 
@@ -181,6 +187,8 @@ public class Game2048 {
                     arrayToShift[next] = arrayToShift[current] * 2;
                     arrayToShift[current] = 0;
                     merged = true;
+                    if(arrayToShift[next] == winScore)
+                        gameWin = true;
                 }
 
                 else if (arrayToShift[next] == 0) {
@@ -196,6 +204,63 @@ public class Game2048 {
         }
 
         return arrayToShift;
+    }
+
+    /**
+     * This method returns the number on the block, given the row and the column values.
+     * @param row
+     * @param column
+     * @return
+     * The number on the block.
+     */
+    public int blockStatus(int row, int column) {
+        return gridArray[row][column];
+    }
+
+    /**
+     * This method returns whether next move is possible or not!
+     * @return
+     * True if next move is not possible.
+     * False if there is a possibility of next move.
+     */
+    public boolean checkGameOver() {
+        boolean isGameOver = true;
+        for(int i = 0; i<_gridSize; i++) {
+            for(int j = 0; j<_gridSize; j++) {
+                if(gridArray[i][j] == 0) {
+                    isGameOver = false;
+                    break;
+                }
+                else {
+                    isGameOver = !checkIfSameBlockOnFourSides(i, j);
+                    if(!isGameOver)
+                        break;
+                }
+            }
+            if(!isGameOver)
+                break;
+        }
+
+        return isGameOver;
+    }
+
+
+    private boolean checkIfSameBlockOnFourSides(int row, int column) {
+
+        int top = (row != 0) ? gridArray[row-1][column] : 0;
+        int bottom = (row != (_gridSize-1)) ? gridArray[row+1][column] : 0;
+        int right = (column != (_gridSize-1)) ? gridArray[row][column+1] : 0;
+        int left = (column != 0) ? gridArray[row][column-1] : 0;
+
+        int gridElement = gridArray[row][column];
+
+        int[] boundaryArray = new int[]{ top, bottom, right, left};
+
+        for(int i = 0; i < boundaryArray.length; i++)
+            if(gridElement == boundaryArray[i])
+                return true;
+
+        return false;
     }
 
 }

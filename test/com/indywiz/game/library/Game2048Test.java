@@ -1,13 +1,15 @@
 package com.indywiz.game.library;
 
 import junit.framework.TestCase;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * Created by viswanathanr on 4/11/14.
  */
-public class Game2048Test extends TestCase {
+
+public class Game2048Test extends TestCase{
 
     Game2048 game2048;
 
@@ -126,7 +128,6 @@ public class Game2048Test extends TestCase {
         assertFalse(game2048.spawnABlockAt(2,1, -4));
     }
 
-    // todo : Move blocks
 
     //Move to right
     @Test
@@ -291,6 +292,86 @@ public class Game2048Test extends TestCase {
         }
     }
 
+    @Test
+    public void testMoveTheBlocksRightWithMultipleRowsOfNonEmptyBlocks() {
+        game2048.initializeBoard(0, 1);
+        game2048.spawnABlockAt(0, 2, 2);
+        game2048.spawnABlockAt(0, 3, 4);
+        game2048.spawnABlockAt(1, 0, 2);
+        game2048.spawnABlockAt(1, 3, 2);
+
+        game2048.moveTo(Game2048.Directions.RIGHT);
+
+        int[][] resultArray = new int[][]{
+                {0, 0, 4, 4},
+                {0, 0, 0, 4},
+                {0, 0, 0, 0},
+                {0, 0, 0, 0}
+        };
+
+        Assert.assertArrayEquals(resultArray, game2048.gridArray);
+    }
+
+    @Test
+    public void testBlockStatusIsEmpty() {
+        game2048.initializeBoard(0, 0);
+        assertEquals(0, game2048.blockStatus(3, 3) );
+    }
+
+    @Test
+    public void testBlockNotEmpty() {
+        game2048.initializeBoard(0, 0);
+        assertEquals(2, game2048.gridArray[0][0]);
+    }
+
+    //Check game over
+
+    @Test
+    public void testGameOverToBeFalseIfThereAreMoreStepsPossibleWithEmptyBlocks() {
+        game2048.initializeBoard(2,3);
+        assertFalse(game2048.checkGameOver());
+    }
+
+    @Test
+    public void testGameOverToBeTrueIfThereAreNoSameBlockSurroundingTheCurrentBlock() {
+        game2048 = new Game2048(3);
+        game2048.initializeBoard(0, 0);
+        game2048.spawnABlockAt(0, 1, 4);
+        game2048.spawnABlockAt(0, 2, 2);
+        game2048.spawnABlockAt(1, 0, 4);
+        game2048.spawnABlockAt(1, 1, 2);
+        game2048.spawnABlockAt(1, 2, 4);
+        game2048.spawnABlockAt(2, 0, 2);
+        game2048.spawnABlockAt(2, 1, 4);
+        game2048.spawnABlockAt(2, 2, 2);
+
+        assertTrue(game2048.checkGameOver());
+    }
+
+    @Test
+    public void testGameOverToBeFalseIfThereAreSameBlockSurroundingTheCurrentBlock() {
+        game2048 = new Game2048(3);
+        game2048.initializeBoard(0, 0);
+        game2048.spawnABlockAt(0, 1, 4);
+        game2048.spawnABlockAt(0, 2, 2);
+        game2048.spawnABlockAt(1, 0, 4);
+        game2048.spawnABlockAt(1, 1, 2);
+        game2048.spawnABlockAt(1, 2, 4);
+        game2048.spawnABlockAt(2, 0, 4);
+        game2048.spawnABlockAt(2, 1, 4);
+        game2048.spawnABlockAt(2, 2, 2);
+
+        assertFalse(game2048.checkGameOver());
+    }
+
+    @Test
+    public void testGameWin() {
+        game2048.initializeBoard(0,0);
+        game2048.spawnABlockAt(0, 1, 1024);
+        game2048.spawnABlockAt(0, 2, 1024);
+        game2048.moveTo(Game2048.Directions.RIGHT);
+        assertTrue(game2048.gameWin);
+    }
 
 
 
