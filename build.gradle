@@ -35,6 +35,7 @@ buildscript {
 
 cobertura{
     coverageSourceDirs = sourceSets.main.java.srcDirs
+    coverageExcludes = ['.*com.indywiz.game.ui.*']
     coverageFormats = ['html', 'xml']
 }
 
