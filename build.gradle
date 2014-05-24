@@ -18,8 +18,8 @@ repositories {
 dependencies {
     compile files("$JAVA_HOME/jre/lib/jfxrt.jar")
     testCompile group: 'junit', name: 'junit', version: '4.11'
-
 }
+
 
 buildscript {
     repositories {
@@ -33,6 +33,17 @@ buildscript {
 
 }
 
+task copyRequiredFiles(type: Copy) {
+    from 'src/com/indywiz/game/ui/view/Game2048.fxml'
+    into 'build/classes/main/com/indywiz/game/ui/view'
+}
+
+task (runui, dependsOn: ['classes', 'copyRequiredFiles'], type: JavaExec) {
+
+    main = 'com.indywiz.game.ui.Main'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
 cobertura{
     coverageSourceDirs = sourceSets.main.java.srcDirs
     coverageExcludes = ['.*com.indywiz.game.ui.*']
@@ -43,4 +54,5 @@ test {
     jvmArgs '-XX:-UseSplitVerifier'
 }
 
-defaultTasks 'clean', 'cobertura'
+//Default tasks are just to run tests and coverage. To run the UI, type in gradle runui in the command line.
+defaultTasks 'clean','cobertura'

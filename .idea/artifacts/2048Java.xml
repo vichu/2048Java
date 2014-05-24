@@ -1,0 +1,28 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="2048Java">
+    <output-path>$PROJECT_DIR$/out/artifacts/2048Java</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="com.indywiz.game.ui.Main" />
+        <option name="customManifestAttributes">
+          <list>
+            <JavaFxManifestAttribute>
+              <option name="name" value="" />
+              <option name="value" value="" />
+            </JavaFxManifestAttribute>
+          </list>
+        </option>
+        <option name="description" value="A java implementation of 2048 game." />
+        <option name="htmlParamFile" value="" />
+        <option name="paramFile" value="" />
+        <option name="title" value="Game 2048" />
+        <option name="vendor" value="" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="2048Java.jar">
+        <element id="module-output" name="2048Java" />
+      </element>
+    </root>
+  </artifact>
+</component>

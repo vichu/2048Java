@@ -72,6 +72,9 @@ public class Game2048 {
         if ( checkIfInvalid(row, column) )
             return false;
 
+        if( gridArray[row][column] != 0 )
+            return false;
+
         if(number <= 0 || ( (number & (number-1)) != 0 ) )    //Check for power of two.
             return false;
 

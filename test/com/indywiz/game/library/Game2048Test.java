@@ -117,6 +117,13 @@ public class Game2048Test extends TestCase{
     }
 
     @Test
+    public void testSpawnABlockWithAlreadyIntializedRowAndColumnValues() {
+        game2048.initializeBoard(1, 2);
+        game2048.spawnABlockAt(1, 1, 4);
+        assertFalse(game2048.spawnABlockAt(1, 1, 4));
+    }
+
+    @Test
     public void testSpawnABlockWithNumberBeingANonPowerOfTwo() {
         game2048.initializeBoard(1, 2);
         assertFalse(game2048.spawnABlockAt(2, 1, 5));

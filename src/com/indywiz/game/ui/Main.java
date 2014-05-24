@@ -19,9 +19,9 @@ public class Main extends Application {
 
         Parent root = FXMLLoader.load(getClass().getResource("view/Game2048.fxml"));
 
-        Scene scene = new Scene(root, 600, 400, Color.WHEAT);
+        Scene scene = new Scene(root, 600, 400, Color.valueOf("#faf8ef"));
 
-        stage.setTitle("FXML Welcome");
+        stage.setTitle("Game 2048");
         stage.setScene(scene);
 
         stage.show();
