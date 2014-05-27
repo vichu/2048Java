@@ -19,10 +19,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class MainController implements Initializable {
 
@@ -41,6 +38,8 @@ public class MainController implements Initializable {
 
     @FXML
     private void someKeyPressed(KeyEvent event) {
+
+        int[][] prevState = getStateOfGame();
         if(event.getCode().isNavigationKey()) {
             String action = event.getCode().getName();
             if(action.equals("Left")) {
@@ -56,11 +55,28 @@ public class MainController implements Initializable {
                 game2048.moveTo(Game2048.Directions.DOWN);
             }
 
-            if(!game2048.checkGameOver())
+            int[][] currentState = getStateOfGame();
+
+            boolean nextMoveDecision = Arrays.deepEquals(prevState, currentState);
+
+            if(!game2048.checkGameOver() && !nextMoveDecision)
                 generateNewBlock();
             refreshGrid();
 
         }
+    }
+
+    private int[][] getStateOfGame() {
+
+        int[][] state = new int[4][4];
+
+        for(int i = 0; i < 4; i++) {
+            for(int j = 0; j < 4; j++)
+                state[i][j] = game2048.blockStatus(i, j);
+        }
+
+        return state;
+
     }
 
     private void generateNewBlock() {
