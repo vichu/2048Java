@@ -22,6 +22,7 @@ public class Main extends Application {
         Scene scene = new Scene(root, 600, 400, Color.valueOf("#faf8ef"));
 
         stage.setTitle("Game 2048");
+        stage.setResizable(false);
         stage.setScene(scene);
 
         stage.show();

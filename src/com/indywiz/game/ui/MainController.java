@@ -2,15 +2,25 @@ package com.indywiz.game.ui;
 
 
 import com.indywiz.game.library.Game2048;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBoxBuilder;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.ResourceBundle;
 
@@ -19,9 +29,15 @@ public class MainController implements Initializable {
     @FXML
     public GridPane mainGrid;
 
+    @FXML
+    public Label scoreLabel;
+
     public Label[][] gridLabels;
 
     public Game2048 game2048;
+
+    public Map<Integer, String> backgroundColor = new HashMap<Integer, String>();
+
 
     @FXML
     private void someKeyPressed(KeyEvent event) {
@@ -68,11 +84,28 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        initializeColorMap();
+
         mainGrid.setStyle("-fx-background-color: #bbada0;");
         mainGrid.setPadding(new Insets(5, 5, 5, 5));
         mainGrid.setAlignment(Pos.CENTER);
         createButtons();
         initializeGame();
+    }
+
+    private void initializeColorMap() {
+        backgroundColor.put(2, "eee4da");
+        backgroundColor.put(4, "ede0c8");
+        backgroundColor.put(8, "f2b179");
+        backgroundColor.put(16, "f59563");
+        backgroundColor.put(32, "f67c5f");
+        backgroundColor.put(64, "f65e3b");
+        backgroundColor.put(128, "edcf72");
+        backgroundColor.put(256, "edcc61");
+        backgroundColor.put(512, "edc850");
+        backgroundColor.put(1024, "edc53f");
+        backgroundColor.put(2048, "edc22e");
     }
 
     private void initializeGame() {
@@ -96,11 +129,16 @@ public class MainController implements Initializable {
 
                 if(gridNumber > 0) {
                     gridLabels[i][j].setText(""+gridNumber);
+                    gridLabels[i][j].setStyle("-fx-background-color: #"+backgroundColor.get(gridNumber));
                 }
                 else {
                     gridLabels[i][j].setText("");
+                    gridLabels[i][j].setStyle("-fx-background-color: rgba(238, 228, 218, 0.35);");
                 }
             }
+        if(game2048.checkGameOver())
+            createDialogBox("Game over");
+        scoreLabel.setText(""+game2048.score);
     }
 
     private void createButtons() {
@@ -118,6 +156,41 @@ public class MainController implements Initializable {
             }
         }
     }
+
+
+    void createDialogBox(String message)
+    {
+        final Stage myDialog = new Stage();
+        myDialog.initModality(Modality.APPLICATION_MODAL);
+        Button okButton = new Button("Restart game");
+        okButton.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent arg0) {
+                myDialog.close();
+                initializeGame();
+            }
+        });
+        displayDialog(myDialog, okButton, message);
+    }
+
+    void displayDialog(final Stage myDialog, Button okButton, String message)
+    {
+        Scene myDialogScene;
+        myDialogScene = new Scene(VBoxBuilder.create()
+                .children(new Text(message), okButton)
+                .alignment(Pos.CENTER)
+                .padding(new Insets(50))
+                .build());
+
+        myDialog.setWidth(300);
+        myDialog.setHeight(100);
+        myDialog.centerOnScreen();
+        myDialog.setTitle("Message");
+        myDialog.setResizable(false);
+        myDialog.setScene(myDialogScene);
+        myDialog.show();
+    }
+
 
 
 

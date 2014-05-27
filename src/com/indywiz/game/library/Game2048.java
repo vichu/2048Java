@@ -5,6 +5,7 @@ public class Game2048 {
     private int _gridSize = 4; //default
     int[][] gridArray = null;
     private int winScore = 2048;
+    public int score = 0;
     public boolean gameWin = false;
 
     public enum Directions{
@@ -188,6 +189,7 @@ public class Game2048 {
 
                 if ( (arrayToShift[current] == arrayToShift[next]) && (!merged) ) {
                     arrayToShift[next] = arrayToShift[current] * 2;
+                    score += arrayToShift[next];
                     arrayToShift[current] = 0;
                     merged = true;
                     if(arrayToShift[next] == winScore)
