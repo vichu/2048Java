@@ -33,6 +33,8 @@ public class MainController implements Initializable {
 
     public Game2048 game2048;
 
+    public boolean goOn = false;
+
     public Map<Integer, String> backgroundColor = new HashMap<Integer, String>();
 
 
@@ -61,6 +63,21 @@ public class MainController implements Initializable {
 
             if(!game2048.checkGameOver() && !nextMoveDecision)
                 generateNewBlock();
+
+            if(game2048.gameWin && !goOn) {
+
+                final Stage myDialog = new Stage();
+                myDialog.initModality(Modality.APPLICATION_MODAL);
+                Button okButton = new Button("Cool!, now go on!");
+                okButton.setOnAction(new EventHandler<ActionEvent>(){
+                    @Override
+                    public void handle(ActionEvent arg0) {
+                        myDialog.close();
+                        goOn = true;
+                    }
+                });
+                displayDialog(myDialog, okButton, "Congrats!!!");
+            }
             refreshGrid();
 
         }
@@ -126,14 +143,13 @@ public class MainController implements Initializable {
 
     private void initializeGame() {
         game2048 = new Game2048();
-
+        goOn = false;
         Random randomInt = new Random(System.currentTimeMillis());
         int rowRandom = randomInt.nextInt(4);
         randomInt.setSeed(System.currentTimeMillis());
         int colRandom = randomInt.nextInt(4);
 
         System.out.println("Game initialized : " + game2048.initializeBoard(rowRandom, colRandom));
-
         refreshGrid();
 
     }
@@ -153,7 +169,7 @@ public class MainController implements Initializable {
                 }
             }
         if(game2048.checkGameOver())
-            createDialogBox("Game over");
+            createDialogBox("Game over", "Restart game");
         scoreLabel.setText(""+game2048.score);
     }
 
@@ -174,11 +190,11 @@ public class MainController implements Initializable {
     }
 
 
-    void createDialogBox(String message)
+    void createDialogBox(String message, String buttonMessage)
     {
         final Stage myDialog = new Stage();
         myDialog.initModality(Modality.APPLICATION_MODAL);
-        Button okButton = new Button("Restart game");
+        Button okButton = new Button(buttonMessage);
         okButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent arg0) {
